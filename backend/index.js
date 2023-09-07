@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const { generateFile } = require('./generateFile');
+const { executeCPP } = require("./executeCPP");
 
 //middlewares
 app.use(express.urlencoded({ extended: true }));
@@ -11,11 +13,18 @@ app.get("/", (req, res) => {
   res.json({ online: "complier" });
 });
 
-app.post("/run", (req, res) => {
+app.post("/run", async (req, res) => {
   const { language = "cpp", code } = req.body;
 
   if (code) {
-    res.json({ language, code });
+
+    //generate file
+    const filePath = await generateFile(language,code);
+    
+    //execute/run file
+    const output = await executeCPP(filePath)
+    res.json({ filePath, output });
+
   } else {
     res
       .status(400)
