@@ -16,11 +16,11 @@ const executeCPP = (filePath) => {
     exec(
       `g++ ${filePath} -o ${outPath} && cd ${outputPath} &&  .//${jobId}.out`,
       (error, stdout, stderr) => {
-        if (error) {
-          reject(error);
-        }
-        if (stderr) {
+        if (stderr ) {
           reject(stderr);
+        }
+        if(error){
+          reject(error);
         }
         resolve(stdout);
       }

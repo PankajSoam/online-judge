@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { generateFile } = require('./generateFile');
+const { generateFile } = require("./generateFile");
 const { executeCPP } = require("./executeCPP");
 
 //middlewares
@@ -17,14 +17,16 @@ app.post("/run", async (req, res) => {
   const { language = "cpp", code } = req.body;
 
   if (code) {
-
     //generate file
-    const filePath = await generateFile(language,code);
-    
-    //execute/run file
-    const output = await executeCPP(filePath)
-    res.json({ filePath, output });
+    const filePath = await generateFile(language, code);
 
+    //execute/run file
+    try {
+      const output = await executeCPP(filePath);
+      res.json({ filePath, output });
+    } catch (error) {
+      res.status(400).json({ succes: false, message: error });
+    }
   } else {
     res
       .status(400)
