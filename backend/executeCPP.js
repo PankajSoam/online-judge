@@ -8,13 +8,14 @@ if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath, { recursive: true });
 }
 
-const executeCPP = (filePath) => {
+const executeCPP = (filePath, language) => {
   const jobId = path.basename(filePath).split(".")[0];
   const outPath = path.join(outputPath, `${jobId}.out`);
 
   return new Promise((resolve, reject) => {
+    const executeCommand = `${language==="cpp"? "g++" : "gcc"} ${filePath} -o ${outPath} && cd ${outputPath} &&  .//${jobId}.out`
     exec(
-      `g++ ${filePath} -o ${outPath} && cd ${outputPath} &&  .//${jobId}.out`,
+      executeCommand,
       (error, stdout, stderr) => {
         if (stderr ) {
           reject(stderr);
