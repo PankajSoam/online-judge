@@ -1,11 +1,14 @@
 const { exec } = require("child_process");
 
-const executeInterpretedLang = (filePath, language) => {
+const executeInterpretedLang = (filePath, language, userInput) => {
+  if(userInput){
+    userInput = userInput.toString();
+  }
   let execComand;
   if (language === "js") execComand = `node ${filePath}`;
   else if (language === "py") execComand = `python ${filePath}`;
   return new Promise((resolve, reject) => {
-    exec(execComand, (error, stdout, stderr) => {
+    const childProcess = exec(execComand, (error, stdout, stderr) => {
       if (!(stderr === "")) {
         reject(stderr);
       } else if (error) {
@@ -13,6 +16,12 @@ const executeInterpretedLang = (filePath, language) => {
       }
       resolve(stdout);
     });
+    if(userInput){
+      childProcess.stdin.write(userInput);
+      childProcess.stdin.end();
+    }
+    
+
   });
 };
 

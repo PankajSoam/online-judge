@@ -4,7 +4,8 @@
   "description": "a virtual court where we will judge a user's code",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./index.js"
   },
   "author": "pankaj soam",
   "license": "ISC",

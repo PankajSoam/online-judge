@@ -3,7 +3,7 @@ const { executeCompiledLang } = require("./executeCompiledLang");
 const { executeInterpretedLang } = require("./executeInterpretedLang");
 
 const runCode = async (req, res) => {
-  const { language = "cpp", code } = req.body;
+  const { language = "cpp", code, userInput } = req.body;
 
   if (code) {
     //generate file
@@ -13,9 +13,9 @@ const runCode = async (req, res) => {
     try {
       let output;
       if (language === "c" || language === "cpp")
-        output = await executeCompiledLang(filePath, language);
+        output = await executeCompiledLang(filePath, language, userInput);
       if (language === "js" || language === "py")
-        output = await executeInterpretedLang(filePath, language);
+        output = await executeInterpretedLang(filePath, language, userInput);
 
       res.json({ filePath, output: output });
     } catch (error) {
